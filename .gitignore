@@ -1,0 +1,12 @@
+# Exclude .env file
+.env
+
+# Exclude uv-related files and directories
+__pycache__/
+bin/
+etc/
+lib/
+share/
+*.lock
+CACHEDIR.TAG
+pyvenv.cfg
