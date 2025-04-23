@@ -11,12 +11,14 @@ certifi==2025.1.31
 charset-normalizer==3.4.1
 click==8.1.8
 dataclasses-json==0.6.7
+diskcache==5.6.3
 dotenv==0.9.9
 filelock==3.18.0
 frozenlist==1.6.0
 fsspec==2025.3.2
 gitdb==4.0.12
 gitpython==3.1.44
+gpt4all==2.8.2
 h11==0.14.0
 httpcore==1.0.8
 httpx==0.28.1
@@ -39,6 +41,7 @@ langchain-pinecone==0.2.5
 langchain-tests==0.3.19
 langchain-text-splitters==0.3.8
 langsmith==0.3.33
+llama-cpp-python==0.3.8
 markupsafe==3.0.2
 marshmallow==3.26.1
 mpmath==1.3.0
@@ -63,6 +66,7 @@ pydantic==2.11.3
 pydantic-core==2.33.1
 pydantic-settings==2.9.1
 pydeck==0.9.1
+pyllamacpp==2.4.3
 pytest==8.3.5
 pytest-asyncio==0.26.0
 pytest-socket==0.7.0

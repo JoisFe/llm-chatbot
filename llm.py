@@ -2,14 +2,15 @@ from langchain.embeddings.huggingface import HuggingFaceEmbeddings
 from langchain_core.prompts import PromptTemplate, ChatPromptTemplate, MessagesPlaceholder, FewShotChatMessagePromptTemplate
 from langchain_pinecone import PineconeVectorStore
 from langchain_core.output_parsers import StrOutputParser
+from huggingface_hub import hf_hub_download
+from langchain.llms import LlamaCpp
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from config import answer_examples
-from transformers import pipeline
-from langchain_huggingface import HuggingFacePipeline
+import os
 
 store = {}
 
@@ -54,19 +55,20 @@ def get_history_retriever():
     return history_aware_retriever
 
 
-def get_llm(
-    model_name: str = "beomi/KoAlpaca-Polyglot-5.8B",
-):
-    gen = pipeline(
-        "text-generation",
-        model=model_name,
-        device="cpu",
-        max_new_tokens=512,
-        do_sample=True,
-        temperature=0.7,
+def get_llm():
+    model_path = hf_hub_download(
+        repo_id="tensorblock/llama-2-ko-7b-GGUF",
+        filename="llama-2-ko-7b-Q4_K_M.gguf",     
+        cache_dir=os.path.expanduser("~/.cache/llama-2-ko-7b")
     )
-    return HuggingFacePipeline(pipeline=gen)
-
+   
+    return LlamaCpp(
+        model_path=model_path,
+        n_ctx=4096,
+        max_tokens=512,
+        temperature=0.2,
+        n_threads=os.cpu_count() or 4,  
+    )
 
 
 def get_dictionary_chain():
