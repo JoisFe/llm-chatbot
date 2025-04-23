@@ -2,13 +2,14 @@ from langchain.embeddings.huggingface import HuggingFaceEmbeddings
 from langchain_core.prompts import PromptTemplate, ChatPromptTemplate, MessagesPlaceholder, FewShotChatMessagePromptTemplate
 from langchain_pinecone import PineconeVectorStore
 from langchain_core.output_parsers import StrOutputParser
-from langchain_ollama import ChatOllama
 from langchain.chains import create_history_aware_retriever, create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from config import answer_examples
+from transformers import pipeline
+from langchain_huggingface import HuggingFacePipeline
 
 store = {}
 
@@ -53,9 +54,19 @@ def get_history_retriever():
     return history_aware_retriever
 
 
-def get_llm(model="llama3.2"):
-    llm = ChatOllama(model=model)  
-    return llm
+def get_llm(
+    model_name: str = "beomi/KoAlpaca-Polyglot-5.8B",
+):
+    gen = pipeline(
+        "text-generation",
+        model=model_name,
+        device="cpu",
+        max_new_tokens=512,
+        do_sample=True,
+        temperature=0.7,
+    )
+    return HuggingFacePipeline(pipeline=gen)
+
 
 
 def get_dictionary_chain():
