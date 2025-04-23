@@ -8,5 +8,5 @@ etc/
 lib/
 share/
 *.lock
-CACHEDIR.TAG
+CACHEDDIR.TAG
 pyvenv.cfg
